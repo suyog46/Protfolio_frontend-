@@ -28,7 +28,7 @@ function Certificates() {
           issueDate: "2025",
           credentialId: "NSK-2025-042",
           imagePrefix:"img/pj3_",
-          imageCount:"3"
+          imageCount:3
         },
         {
             imageUrl: "img/pj2_1.jpg",
@@ -39,7 +39,7 @@ function Certificates() {
             issueDate: "2025",
             credentialId: "NSK-2025-042",
           imagePrefix:"img/pj2_",
-          imageCount:"2"
+          imageCount:2
 
 
           }, 
@@ -52,7 +52,7 @@ function Certificates() {
             issueDate: "2024",
             credentialId: "NSK-2025-042",
           imagePrefix:"img/pj8_",
-          imageCount:"1"
+          imageCount:1
           },
       ];
   return (
