@@ -47,8 +47,7 @@ function AboutMe() {
             className="mt-5 text-base sm:text-lg md:text-sm lg:text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 shadow-md opacity-80 leading-loose  max-w-xl  px-4"
           >
             <p className="mb-4 mt-4 leading-loose">
-              Hi there! I'm a passionate enthusiast with a knack for crafting seamless web experiences. With expertise in the MERN stack, I excel in building dynamic React applications and diving deep into back-end development. Alongside my web design certification, I specialize in UI/UX design, ensuring that users not only use but love the applications I create. 🚀
-            </p>
+Hi!Its me Suyog Lamsal! I'm passionate about creating smooth web experiences. I specialize in the MERN stack, building dynamic React apps and working on back-end development.            </p>
 
             <p className="mb-4 leading-loose">
               I've been fortunate to work on numerous projects where I've honed my skills in both front and back-end systems. My journey doesn't stop there, as I'm currently expanding my backend knowledge and eagerly exploring IOt. 🎨

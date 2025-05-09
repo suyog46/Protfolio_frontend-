@@ -12,7 +12,7 @@ function Modal({ isOpen, onClose, children }: {
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-4 ">
-      <div className="bg-white dark:bg-slate-900 rounded-lg shadow-xl  w-2/3  max-h-[90vh] p-6  overflow-y-scroll relative ">
+      <div className="bg-white dark:bg-slate-900 rounded-lg shadow-xl   w-full lg:w-2/3  max-h-[90vh] p-6  overflow-y-scroll relative ">
         <button
           className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 dark:hover:text-white"
           onClick={onClose}
@@ -96,9 +96,8 @@ export default function CertificateCard({
           <>
     
             <div className="w-full flex items-center justify-center ">
-                <div className="w-1/2">
+                <div className="lg:w-1/2 w-5/6">
               <CarouselDemo imageCount={imageCount} imagePrefix={imagePrefix} />
-
                 </div>
             
             </div>

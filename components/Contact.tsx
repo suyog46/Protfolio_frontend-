@@ -19,6 +19,8 @@ const formSchema = z.object({
 });
 
 export default function ContactForm() {
+  const [open, setOpen] = useState(false);
+
 const [loading,setLoading]=useState(false);
   const { toast } = useToast()
 
@@ -35,6 +37,13 @@ const [loading,setLoading]=useState(false);
   const onSubmit = async (data: any) => {
     setLoading(true);
     console.log("data is",data);
+      if(loading){
+        toast({
+          title: `Please Wait`,
+          description: "Your feedback is Being S!",
+          className:"bg-cyan-200 text-white-400"
+        })
+      }
     try {
       const response = await axios.post("https://portfolio-backend-5inh.onrender.com/pushfeedback", {
         userName: data.name,
@@ -47,6 +56,7 @@ const [loading,setLoading]=useState(false);
           description: "Your feedback has been successfully provided !",
           className:"bg-green-500 text-white-400"
         })
+        setOpen(false); 
       }
       console.log("Response:", response.data);
     } catch (error:any) {
@@ -58,13 +68,16 @@ const [loading,setLoading]=useState(false);
   };
 
   return (
-    <Dialog>
-      <DialogTrigger>
-        <Button variant="secondary" size="lg" className= "text-xs lg:text-normal bg-emerald-400 text-white hover:bg-gray-300 transition duration-300">
-          Contact me
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <Button
+  variant="secondary"
+  size="lg"
+  className="text-xs lg:text-normal bg-emerald-400 text-white hover:bg-gray-300 transition duration-300"
+  onClick={() => setOpen(true)}
+>
+  Contact me
+</Button>
+      <DialogContent className=" lg:w-[420px] w-[350px]">
         <DialogHeader>
           <DialogTitle>Let's Connect</DialogTitle>
           <DialogDescription>
