@@ -8,10 +8,10 @@ function AboutMe() {
   return (
     <section id="aboutme">
     <div className="about bg-slate-950 p-8 lg:p-16  overflow-hidden" id="about">
-      <h1 className="text-5xl text-white text-start lg:text-center mb-10">About Me</h1>
+      <h1 className="text-5xl  text-start lg:text-center mb-10 text-emerald-400">About Me</h1>
 
-        <Tabs defaultValue="account" className="w-full ">
-  <TabsList className='justify-center border text-xl p-8 '>
+        <Tabs defaultValue="account" className="w-full  ">
+  <TabsList className='justify-center border text-xl p-8  '>
     <TabsTrigger value="account" className='text-xl'>Introduction</TabsTrigger>
     <TabsTrigger value="password" className='text-xl'>Skills</TabsTrigger>
   </TabsList>
@@ -22,12 +22,12 @@ function AboutMe() {
 
         <div className="flex justify-center  lg:w-2xl items-center  ">
           <motion.img
-            src="img/profile_1.jpg"
+            src="img/profile_2.jpg"
             alt="Profile"
             className="object-cover rounded-full w-72 h-72 max-w-sm "
-            initial={{ x: -100, opacity: 0 }} // Start off-screen to the left
-            whileInView={{ x: 0, opacity: 1 }} // Animate to original position
-            transition={{
+            initial={{ x: -100, opacity: 0 }} 
+            whileInView={{ x: 0, opacity: 1 }}
+                        transition={{
               duration: 0.8,
               ease: 'easeOut',
             }}

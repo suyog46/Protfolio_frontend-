@@ -4,17 +4,11 @@ import "@/app/globals.css";
 import { ThemeProvider } from "./provider"
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster"
+import { Inter, Poppins } from 'next/font/google';
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const poppins = Poppins({ subsets: ['latin'], weight: ['400', '600'], variable: '--font-poppins' });
+
 
 export const metadata: Metadata = {
   title: "Suyog's Protfolio",
@@ -27,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${poppins.variable}`} >
       <head />
       <body>
         <ThemeProvider

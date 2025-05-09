@@ -5,14 +5,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap');
 /* @import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Bonheur+Royale&family=Lavishly+Yours&display=swap');
-  body {
-    font-family: 'Poppins', sans-serif;
-  }
-  
-  h1, h2, h3, p {
-    font-family: 'Poppins', sans-serif; /* Apply to other elements as needed */
-  }
+body {
+  font-family: var(--font-inter);
+}
 
+
+
+h1, h2, h3 {
+  font-family: var(--font-poppins);
+}
 @layer utilities {
   .text-balance {
     text-wrap: balance;

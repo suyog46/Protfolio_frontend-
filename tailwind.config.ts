@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		maskImage: {
+			'left-fade': 'linear-gradient(to right, transparent 0%, black 30%, black 100%)',
+		  },
 		fontFamily: {
 			sans: ['Poppins', 'sans-serif'],
 			lavishly: ['Lavishly Yours', 'cursive'],

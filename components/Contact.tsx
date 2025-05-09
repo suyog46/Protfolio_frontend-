@@ -60,7 +60,7 @@ const [loading,setLoading]=useState(false);
   return (
     <Dialog>
       <DialogTrigger>
-        <Button variant="secondary" size="lg" className= "text-xs lg:text-normal bg-white text-black hover:bg-gray-300 transition duration-300">
+        <Button variant="secondary" size="lg" className= "text-xs lg:text-normal bg-emerald-400 text-white hover:bg-gray-300 transition duration-300">
           Contact me
         </Button>
       </DialogTrigger>
