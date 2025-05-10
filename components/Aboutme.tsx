@@ -44,7 +44,7 @@ function AboutMe() {
               duration: 0.8,
               ease: 'easeOut',
             }}
-            className="mt-5 text-base sm:text-lg md:text-sm lg:text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 shadow-md opacity-80 leading-loose  max-w-xl  px-4"
+            className="mt-5 text-base sm:text-lg md:text-sm lg:text-sm font-semibold text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-400 to-gray-500 shadow-md opacity-80 leading-loose  max-w-xl  px-4 dark:text-white"
           >
             <p className="mb-4 mt-4 leading-loose">
 Hi!Its me Suyog Lamsal! I'm passionate about creating smooth web experiences. I specialize in the MERN stack, building dynamic React apps and working on back-end development.            </p>

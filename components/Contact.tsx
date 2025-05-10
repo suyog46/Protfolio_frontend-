@@ -45,7 +45,7 @@ export default function ContactForm() {
     if (!token) {
       toast({
         title: "Error",
-        description: "Please complete the CAPTCHA verification",
+        description: "Catptcha is being verified.Please wait",
         variant: "destructive",
       });
       return;
