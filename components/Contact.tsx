@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast"
-import { useState } from "react";
-
+import { useState, useRef, useEffect } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -20,109 +20,154 @@ const formSchema = z.object({
 
 export default function ContactForm() {
   const [open, setOpen] = useState(false);
-
-const [loading,setLoading]=useState(false);
-  const { toast } = useToast()
-
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: zodResolver(formSchema),
   });
 
+  // Reset form when modal closes
+  useEffect(() => {
+    if (!open) {
+      reset();
+      setCaptchaToken("");
+      if (recaptchaRef.current) {
+        recaptchaRef.current.reset();
+      }
+    }
+  }, [open, reset]);
 
   const onSubmit = async (data: any) => {
+    if (!captchaToken) {
+      toast({
+        title: "Error",
+        description: "Please complete the CAPTCHA",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setLoading(true);
-    console.log("data is",data);
-      if(loading){
-        toast({
-          title: `Please Wait`,
-          description: "Your feedback is Being S!",
-          className:"bg-cyan-200 text-white-400"
-        })
-      }
     try {
-      const response = await axios.post("https://portfolio-backend-5inh.onrender.com/pushfeedback", {
+      const response = await axios.post("http://localhost:4000/pushfeedback", {
         userName: data.name,
         userEmail: data.email,
         userFeedback: data.message,
+        token: captchaToken,
       });
-      if(response.data.success){
+
+      if (response.data.success) {
         toast({
           title: `Thank you ${data.name}`,
-          description: "Your feedback has been successfully provided !",
-          className:"bg-green-500 text-white-400"
-        })
-        setOpen(false); 
+          description: "Your feedback has been successfully provided!",
+          className: "bg-green-500 text-white"
+        });
+        setOpen(false);
       }
-      console.log("Response:", response.data);
-    } catch (error:any) {
-      console.error("Error:", error.response ? error.response.data : error.message);
-    }
-    finally{
+    } catch (error: any) {
+      console.error("Error:", error);
+      toast({
+        title: "Error",
+        description: error.response?.data?.message || "Failed to submit feedback",
+        variant: "destructive",
+      });
+    } finally {
       setLoading(false);
     }
   };
 
+  const handleCaptchaChange = (value: string | null) => {
+    if (value) {
+      setCaptchaToken(value);
+    }
+  };
+
+  // Prevent modal from closing when clicking on CAPTCHA
+  const handleInteractOutside = (e: Event) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('.recaptcha-container')) {
+      e.preventDefault();
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <Button
-  variant="secondary"
-  size="lg"
-  className="text-xs lg:text-normal bg-emerald-400 text-white hover:bg-gray-300 transition duration-300"
-  onClick={() => setOpen(true)}
->
-  Contact me
-</Button>
-      <DialogContent className=" lg:w-[420px] w-[350px]">
-        <DialogHeader>
-          <DialogTitle>Let's Connect</DialogTitle>
-          <DialogDescription>
-            I love to hear any feedback from you guys. You are one form away from connecting with me. Please fill it up.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
-          <div className="grid grid-cols-6 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" className="col-span-5" placeholder="Your name" {...register("name")} />
-            {errors.name && <p className="text-red-500 col-span-6">{errors.name.message}</p>}
-          </div>
-          <div className="grid grid-cols-6 items-center gap-4">
-            <Label htmlFor="email" className="text-right">
-              Email
-            </Label>
-            <Input id="email" className="col-span-5" placeholder="Your email" {...register("email")} />
-            {errors.email && <p className="text-red-500 col-span-6">{errors.email.message}</p>}
-          </div>
-          <div className="grid w-full gap-1.5 p-3">
-            <Label htmlFor="message">Your Message</Label>
-            <Textarea id="message" placeholder="Type your message here." {...register("message")} />
-            {errors.message && <p className="text-red-500">{errors.message.message}</p>}
-            <p className="text-sm text-muted-foreground">Feedback is all we need to be better</p>
-          </div>
-          <DialogFooter>
-            <Button type="submit" className="flex gap-2 items-center justify-center" 
-            disabled={loading}
-            >
-            {loading ? (
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button
+            variant="secondary"
+            size="lg"
+            className="text-xs lg:text-normal bg-emerald-400 text-white hover:bg-gray-300 transition duration-300"
+          >
+            Contact me
+          </Button>
+        </DialogTrigger>
+        <DialogContent 
+          ref={modalRef}
+          className="lg:w-[420px] w-[350px] overflow-visible"
+          onInteractOutside={handleInteractOutside}
+        >
+          <DialogHeader>
+            <DialogTitle>Let's Connect</DialogTitle>
+            <DialogDescription>
+              I love to hear any feedback from you. You're one form away from connecting with me.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
+            <div className="grid grid-cols-6 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input id="name" className="col-span-5" placeholder="Your name" {...register("name")} />
+              {errors.name && <p className="text-red-500 col-span-6">{errors.name.message}</p>}
+            </div>
+            <div className="grid grid-cols-6 items-center gap-4">
+              <Label htmlFor="email" className="text-right">
+                Email
+              </Label>
+              <Input id="email" className="col-span-5" placeholder="Your email" {...register("email")} />
+              {errors.email && <p className="text-red-500 col-span-6">{errors.email.message}</p>}
+            </div>
+            <div className="grid w-full gap-1.5 p-3">
+              <Label htmlFor="message">Your Message</Label>
+              <Textarea id="message" placeholder="Type your message here." {...register("message")} />
+              {errors.message && <p className="text-red-500">{errors.message.message}</p>}
+              <p className="text-sm text-muted-foreground">Feedback helps us improve</p>
+            </div>
+            
+            {/* ReCAPTCHA container with proper styling */}
+            <div className="recaptcha-container transform scale-90 origin-left">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey="6LfMezQrAAAAAB6sKMLJC_qLSU_U-WB9o1jGXqG7"
+                onChange={handleCaptchaChange}
+              />
+            </div>
+            
+            <DialogFooter>
+              <Button type="submit" className="flex gap-2 items-center justify-center" disabled={loading}>
+                {loading ? (
                   <>
-                   Wait
+                    Wait
                     <div className="w-4 h-4 border-4 border-t-transparent border-black rounded-full animate-spin"></div>
                   </>
                 ) : (
                   "Send"
                 )}
-           
-              
               </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
