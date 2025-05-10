@@ -32,7 +32,7 @@ const Hero = () => {
               duration: 0.8,
               ease: "easeInOut",
             }}
-            className="text-cyan-200    bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-3xl sm:text-4xl md:text-5xl lg:text-4xl font-medium tracking-tight text-transparent "
+            className="text-cyan-100    bg-gradient-to-br from-slate-300 to-slate-500 py-4 bg-clip-text text-3xl sm:text-4xl md:text-5xl lg:text-4xl font-medium tracking-tight text-transparent "
           >
             "Curious Learner  and
             <br />  Aspiring Full Stack Developer"
