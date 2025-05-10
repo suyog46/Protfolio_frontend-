@@ -9,8 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast"
-import { useState, useRef, useEffect } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import { useState, useEffect } from "react";
+import { GoogleReCaptchaProvider, GoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -20,11 +20,9 @@ const formSchema = z.object({
 
 export default function ContactForm() {
   const [open, setOpen] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
 
   const {
     register,
@@ -39,18 +37,15 @@ export default function ContactForm() {
   useEffect(() => {
     if (!open) {
       reset();
-      setCaptchaToken("");
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset();
-      }
+      setToken("");
     }
   }, [open, reset]);
 
   const onSubmit = async (data: any) => {
-    if (!captchaToken) {
+    if (!token) {
       toast({
         title: "Error",
-        description: "Please complete the CAPTCHA",
+        description: "Please complete the CAPTCHA verification",
         variant: "destructive",
       });
       return;
@@ -59,12 +54,12 @@ export default function ContactForm() {
     setLoading(true);
     try {
       // const response = await axios.post("http://localhost:4000/pushfeedback", {
-
+        
       const response = await axios.post("https://portfolio-backend-5inh.onrender.com/pushfeedback", {
         userName: data.name,
         userEmail: data.email,
         userFeedback: data.message,
-        token: captchaToken,
+        token: token,
       });
 
       if (response.data.success) {
@@ -87,22 +82,12 @@ export default function ContactForm() {
     }
   };
 
-  const handleCaptchaChange = (value: string | null) => {
-    if (value) {
-      setCaptchaToken(value);
-    }
-  };
-
-  // Prevent modal from closing when clicking on CAPTCHA
-  const handleInteractOutside = (e: Event) => {
-    const target = e.target as HTMLElement;
-    if (target.closest('.recaptcha-container')) {
-      e.preventDefault();
-    }
+  const onVerify = (token: string) => {
+    setToken(token);
   };
 
   return (
-    <>
+    <GoogleReCaptchaProvider reCaptchaKey="6LfbhTQrAAAAAB8b7slPLUStFZAVgXz62OO_qqGw">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button
@@ -113,11 +98,7 @@ export default function ContactForm() {
             Contact me
           </Button>
         </DialogTrigger>
-        <DialogContent 
-          ref={modalRef}
-          className="lg:w-[420px] w-[350px] overflow-visible"
-          onInteractOutside={handleInteractOutside}
-        >
+        <DialogContent className="lg:w-[420px] w-[350px] overflow-visible">
           <DialogHeader>
             <DialogTitle>Let's Connect</DialogTitle>
             <DialogDescription>
@@ -146,14 +127,8 @@ export default function ContactForm() {
               <p className="text-sm text-muted-foreground">Feedback helps us improve</p>
             </div>
             
-            {/* ReCAPTCHA container with proper styling */}
-            <div className="recaptcha-container transform scale-90 origin-left">
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey="6LfMezQrAAAAAB6sKMLJC_qLSU_U-WB9o1jGXqG7"
-                onChange={handleCaptchaChange}
-              />
-            </div>
+            {/* Hidden reCAPTCHA v3 component */}
+            <GoogleReCaptcha onVerify={onVerify} />
             
             <DialogFooter>
               <Button type="submit" className="flex gap-2 items-center justify-center" disabled={loading}>
@@ -170,6 +145,6 @@ export default function ContactForm() {
           </form>
         </DialogContent>
       </Dialog>
-    </>
+    </GoogleReCaptchaProvider>
   );
 }

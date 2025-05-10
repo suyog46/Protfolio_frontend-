@@ -52,7 +52,7 @@ const Hero = () => {
              */}
             Crafting Real-World Solutions with Technology
           </motion.p>
-          <div className="  flex lg:justify-center justify-between gap-8 mt-8 lg:gap-6 ">
+          <div className="  flex lg:justify-center justify-between lg:gap-8 mt-8 gap-4 ">
             {" "}
             {/* This ensures the button is centered */}
             <Contact />
