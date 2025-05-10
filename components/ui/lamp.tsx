@@ -46,17 +46,18 @@ export const LampContainer = ({
           style={{
             backgroundImage: `conic-gradient(var(--conic-position), var(--tw-gradient-stops))`,
           }}
-          className=" good  absolute inset-auto left-1/2 h-56 lg:w-[30rem] w-[15rem] bg-gradient-conic from-transparent via-transparent to-cyan-500 text-white [--conic-position:from_290deg_at_center_top]"
+          className=" good absolute inset-auto lg:left-1/2 left-36 h-56 lg:w-[30rem] w-[10rem]  bg-gradient-conic from-transparent via-transparent to-cyan-500 text-white [--conic-position:from_290deg_at_center_top]"
         >
-          <div className="hidden lg:block">
-          <div className="  overflow-x-hidden  absolute  w-40 h-[100%] right-0 bg-slate-950  bottom-0 z-20 [mask-image:linear-gradient(to_left,white,transparent)]" />
+          {/* <div className="hidden lg:block"> */}
+          <div className="   absolute  w-40 h-[100%] right-0 bg-slate-950  bottom-0 z-20 [mask-image:linear-gradient(to_left,white,transparent)]" />
           <div className=" absolute  w-[100%] right-0 bg-slate-950 h-40 bottom-0 z-20 [mask-image:linear-gradient(to_top,white,transparent)]" />
 
-          </div>
+          {/* </div> */}
         </motion.div>
         <div className=" good2 absolute top-1/2 h-48 w-1/2 translate-y-12 scale-x-150 bg-slate-950 blur-2xl"></div>
         <div className="absolute top-1/2 z-50 h-48 w-full bg-transparent opacity-10 backdrop-blur-md"></div>
-        <div className="absolute inset-auto z-50 h-36 w-[28rem] -translate-y-1/2 rounded-full bg-cyan-500 opacity-50 blur-3xl"></div>
+
+        <div className="absolute inset-auto z-50 h-36 lg:w-[30rem] w-[26rem] -translate-y-1/2 rounded-full bg-cyan-500 opacity-50 blur-3xl"></div>
         <motion.div
           initial={{ width: "8rem" }}
           whileInView={{ width: "16rem" }}
